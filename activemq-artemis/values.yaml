@@ -56,8 +56,11 @@ persistence:
   ## Default: volume.alpha.kubernetes.io/storage-class: default
   ##
   # storageClass:
-  accessMode: ReadWriteOnce
   size: 8Gi
+  accessMode: ReadWriteOnce
+  ## Set existingClaim to true or false
+  ## If true, you must prepare a PVC with the name e.g `artifactory-ha-member`
+  existingClaim: false
 
 ## Configure resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
@@ -71,6 +74,9 @@ resources:
 # Probably this is only useful for minikube environments and CI
 loadbalancer:
   enabled: true
+
+## Sets environment variables for the artemis container
+env: {}
 
 ## Prometheus Exporters / Metrics
 ##
