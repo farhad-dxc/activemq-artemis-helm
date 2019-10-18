@@ -26,18 +26,16 @@ data:
           {{end}}
         </connectors>
 
-
         <cluster-connections>
           <cluster-connection name="{{ $releaseName }}">
-            <address>jms</address>
+            <address></address>
             <connector-ref>netty-connector</connector-ref>
             <retry-interval>500</retry-interval>
             <retry-interval-multiplier>1.1</retry-interval-multiplier>
             <max-retry-interval>5000</max-retry-interval>
             <initial-connect-attempts>-1</initial-connect-attempts>
             <reconnect-attempts>-1</reconnect-attempts>
-
-            <message-load-balancing>ON_DEMAND</message-load-balancing>
+            <message-load-balancing>STRICT</message-load-balancing>
             <max-hops>1</max-hops>
 
             <static-connectors>
