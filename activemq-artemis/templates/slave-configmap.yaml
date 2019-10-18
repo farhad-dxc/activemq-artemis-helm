@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "artemis.fullname" . }}-configure-slave
+  namespace: {{ .Release.Namespace }}
   labels:
 {{ include "artemis.labels.standard" . | indent 4 }}
 data:
@@ -29,6 +30,9 @@ data:
     MASTERNAME=$(echo ${HOSTNAME} | sed -re 's/-slave/-master/g')
 
     set -e
+    echo fixing permissions for data folder
+    chown artemis /var/lib/artemis/data
+
     echo Copying common configuration
     cp /opt/configure-common/template-common.xml /var/lib/artemis/etc-override/broker-10.xml
 

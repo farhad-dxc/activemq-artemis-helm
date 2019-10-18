@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "artemis.fullname" . }}-master
+  namespace: {{ .Release.Namespace }}
   annotations:
 {{ toYaml .Values.deployment.annotations | indent 4 }}
   labels:
@@ -61,6 +62,8 @@ spec:
             mountPath: /opt/configure-common
           - name: configure-master
             mountPath: /opt/configure-master
+          - name: data
+            mountPath: /var/lib/artemis/data
       containers:
       - name: {{ include "artemis.fullname" . }}
         image: {{ template "artemis.image" . }}
@@ -140,3 +143,4 @@ spec:
       - name: data
         emptyDir: {}
   {{- end}}
+  

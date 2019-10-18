@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ include "artemis.fullname" . }}-slave
+  namespace: {{ .Release.Namespace }}
   annotations:
 {{ toYaml .Values.deployment.annotations | indent 4 }}
   labels:
@@ -35,6 +36,8 @@ spec:
         imagePullSecrets: {{ toYaml .Values.image.pullSecrets }}
         command: ["/bin/sh", "/opt/configure-slave/configure-cluster.sh"]
         volumeMounts:
+          - name: data
+            mountPath: /var/lib/artemis/data
           - name: config-override
             mountPath: /var/lib/artemis/etc-override
           - name: configure-common

@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: {{ include "artemis.fullname" . }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ include "artemis.fullname" . }}
     release: {{ .Release.Name | quote }}
