@@ -68,6 +68,14 @@ artemis-2.6.2
 {{- replace "+" "_" .Chart.Version | printf "%s-%s" .Chart.Name -}}
 {{- end -}}
 
+{{- /*
+namespace prints the namespace.
+Example output:
+amq
+*/ -}}
+{{- define "namespace" -}}
+{{- end -}}
+
 {{/*
 Return the proper image values
 */}}

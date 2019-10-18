@@ -5,6 +5,7 @@ metadata:
     # Make sure DNS is resolvable during initialization.
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
   name: {{ include "artemis.fullname" . }}-master
+  namespace: {{ .Release.Namespace }}
   labels:
 {{ include "artemis.labels.standard" . | indent 4 }}
     component: artemis-node
@@ -22,7 +23,7 @@ spec:
   - name: jmx
     port: 9494
     targetPort: jmxexporter
-  clusterIP: None
+  type: ClusterIP
   selector:
     app: {{ template "artemis.name" . }}
     release: {{ .Release.Name | quote }}

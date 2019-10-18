@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "artemis.fullname" . }}-configure-common
+  namespace: {{ .Release.Namespace }}
   labels:
 {{ include "artemis.labels.standard" . | indent 4 }}
 data:
@@ -10,8 +11,8 @@ data:
     <configuration xmlns="urn:activemq" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
       <core xmlns="urn:activemq:core" xsi:schemaLocation="urn:activemq:core ">
 
-        <cluster-user>exampleUser</cluster-user>
-        <cluster-password>secret</cluster-password>
+        <cluster-user>{{ .Values.artemisUser }}</cluster-user>
+        <cluster-password>{{ .Values.artemisPassword }}</cluster-password>
 
         {{- $name := default .Chart.Name .Values.nameOverride -}}
         {{- $fullname := include "artemis.fullname" . -}}

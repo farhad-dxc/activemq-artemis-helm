@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "artemis.fullname" . }}-configure-master
+  namespace: {{ .Release.Namespace }}
   labels:
 {{ include "artemis.labels.standard" . | indent 4 }}
 data:
@@ -34,6 +35,11 @@ data:
     echo Assigning node as master
     cp /opt/configure-master/template-master.xml /var/lib/artemis/etc-override/broker-11.xml
 
+    echo Adding roles to artemis user
+    printf  "\nadmin=artemis" >> /var/lib/artemis/etc/artemis-roles.properties 
+    cp /var/lib/artemis/etc/artemis-roles.properties /var/lib/artemis/etc-override/artemis-roles.properties
+    cp /var/lib/artemis/etc/artemis-users.properties /var/lib/artemis/etc-override/artemis-users.properties
+    chown artemis /var/lib/artemis/data
     GROUPNAME=$(echo ${HOSTNAME} | sed -re 's/(-slave|-master)//')
     echo Setting the group-name for slave to ${GROUPNAME}
     xmlstarlet ed -L \
