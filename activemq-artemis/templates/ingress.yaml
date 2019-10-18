@@ -10,7 +10,8 @@ metadata:
     {{- range $key, $value := .Values.ingress.annotations }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
-spec:  rules:
+spec:
+  rules:
     {{- if .Values.ingress.hostName }}
     - host: {{ .Values.ingress.hostName }}
       http:

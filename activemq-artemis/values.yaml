@@ -76,7 +76,7 @@ resources:
 
 ## Service type
 service:
-  type: None
+  type: ClusterIP
 
 ingress:
   ## Set to true to enable ingress record generation
