@@ -1,0 +1,33 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "artemis.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+{{ include "artemis.labels.standard" . | indent 4 }}
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:  rules:
+    {{- if .Values.ingress.hostName }}
+    - host: {{ .Values.ingress.hostName }}
+      http:
+    {{- else }}
+    - http:
+    {{- end }}
+        paths:
+          - path: {{ .Values.ingress.path }}
+            backend:
+              serviceName: {{ include "artemis.fullname" . }}-master
+              servicePort: 8161
+{{- if .Values.ingress.tls }}
+  tls:
+    - secretName: {{  .Values.ingress.tlsSecret }}
+      {{- if .Values.ingress.hostName }}
+      hosts:
+        - {{ .Values.ingress.hostName }}
+      {{- end }}
+{{- end }}
+{{- end }}
