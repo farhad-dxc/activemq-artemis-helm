@@ -20,9 +20,9 @@ spec:
   - name: amqp
     port: 5672
     targetPort: amqp
-  - name: jmx
-    port: 9494
-    targetPort: jmxexporter
+  - name: exporter
+    port: 9404
+    targetPort: exporter
   clusterIP: None
   selector:
     app: {{ template "artemis.name" . }}

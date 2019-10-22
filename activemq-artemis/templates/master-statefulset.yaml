@@ -14,7 +14,7 @@ spec:
   selector:
     matchLabels:
       app: {{ template "artemis.name" . }}
-      release: {{ .Release.Name | quote }}    
+      release: {{ .Release.Name | quote }}
       component: master
   template:
     metadata:
@@ -95,7 +95,7 @@ spec:
           containerPort: 61616
         - name: amqp
           containerPort: 5672
-        - name: jmxexporter
+        - name: exporter
           containerPort: 9404
         livenessProbe:
           tcpSocket:

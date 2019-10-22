@@ -8,14 +8,15 @@ metadata:
 {{ toYaml .Values.prometheus.operator.serviceMonitor.selector | indent 4 }}
 spec:
   endpoints:
-  - port: jmx-exporter
+  - port: exporter
     interval: {{ .Values.prometheus.jmx.interval }}
   {{- if .Values.prometheus.jmx.scrapeTimeout }}
     scrapeTimeout: {{ .Values.prometheus.jmx.scrapeTimeout }}
   {{- end }}
   selector:
     matchLabels:
-{{ include "artemis.labels.standard" . | indent 6 }}
+      app: {{ template "artemis.name" . }}
+      release: {{ .Release.Name | quote }}
   namespaceSelector:
     any: true
 {{ end }}
