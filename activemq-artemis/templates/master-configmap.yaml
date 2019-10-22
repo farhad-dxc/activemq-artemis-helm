@@ -39,7 +39,7 @@ data:
     printf  "\nadmin=artemis" >> /var/lib/artemis/etc/artemis-roles.properties 
     cp /var/lib/artemis/etc/artemis-roles.properties /var/lib/artemis/etc-override/artemis-roles.properties
     cp /var/lib/artemis/etc/artemis-users.properties /var/lib/artemis/etc-override/artemis-users.properties
-    chown artemis /var/lib/artemis/data
+    
     GROUPNAME=$(echo ${HOSTNAME} | sed -re 's/(-slave|-master)//')
     echo Setting the group-name for slave to ${GROUPNAME}
     xmlstarlet ed -L \
