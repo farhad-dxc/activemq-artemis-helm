@@ -19,6 +19,9 @@ spec:
   - name: amqp
     port: 5672
     targetPort: amqp
+  - name: exporter
+    port: 9404
+    targetPort: exporter
   type: {{ .Values.service.type }}
   selector:
     app: {{ template "artemis.name" . }}

@@ -42,7 +42,7 @@ data:
             <static-connectors>
             {{ range $i,$t := until (int .Values.replicas) }}
               {{ range tuple "master" "slave" }}
-                <connector-ref>{{ $fullname }}-{{ . }}-{{ $i }}</connector-ref>
+                <connector-ref>{{ $fullname }}-{{ . }}-{{ $i }}.{{ $releaseName }}-{{ . }}.{{ $releaseNamespace }}.svc.cluster.local</connector-ref>
               {{ end }}
             {{ end }}
             </static-connectors>
