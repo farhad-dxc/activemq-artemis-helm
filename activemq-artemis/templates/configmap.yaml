@@ -36,19 +36,25 @@ data:
             <max-retry-interval>5000</max-retry-interval>
             <initial-connect-attempts>-1</initial-connect-attempts>
             <reconnect-attempts>-1</reconnect-attempts>
-            <message-load-balancing>STRICT</message-load-balancing>
+            <message-load-balancing>ON_DEMAND</message-load-balancing>
             <max-hops>1</max-hops>
 
             <static-connectors>
             {{ range $i,$t := until (int .Values.replicas) }}
               {{ range tuple "master" "slave" }}
-                <connector-ref>{{ $fullname }}-{{ . }}-{{ $i }}</connector-ref>
+              <connector-ref>{{ $fullname }}-{{ . }}-{{ $i }}</connector-ref>
               {{ end }}
             {{ end }}
             </static-connectors>
 
          </cluster-connection>
        </cluster-connections>
+
+        <address-settings>
+          <address-setting match="#">
+            <redistribution-delay>0</redistribution-delay>
+          </address-setting>
+        </address-settings>
       </core>
     </configuration>
 
