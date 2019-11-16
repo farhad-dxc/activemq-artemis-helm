@@ -23,7 +23,7 @@ spec:
   - name: exporter
     port: 9404
     targetPort: exporter
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   selector:
     app: {{ template "artemis.name" . }}
     release: {{ .Release.Name | quote }}
