@@ -24,7 +24,7 @@ data:
           {{ range tuple "master" "slave" }}
           <connector name="{{ $fullname }}-{{ . }}-{{ $i }}">tcp://{{ $fullname }}-{{ . }}-{{ $i }}.{{ $releaseName }}-{{ . }}.{{ $releaseNamespace }}.svc.cluster.local:61616</connector>
           {{ end }}
-          {{end}}
+          {{ end }}
         </connectors>
 
         <cluster-connections>
@@ -57,4 +57,3 @@ data:
         </address-settings>
       </core>
     </configuration>
-

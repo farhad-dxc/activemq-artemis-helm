@@ -22,9 +22,9 @@ data:
         </ha-policy>
       </core>
     </configuration>
-  
+
   configure-cluster.sh: |
-    
+
     {{ $name := default .Chart.Name .Values.nameOverride }}
     {{ $releaseName := printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
 
@@ -36,10 +36,10 @@ data:
     cp /opt/configure-master/template-master.xml /var/lib/artemis/etc-override/broker-11.xml
 
     echo Adding roles to artemis user
-    printf  "\nadmin=artemis" >> /var/lib/artemis/etc/artemis-roles.properties 
+    printf  "\nadmin=artemis" >> /var/lib/artemis/etc/artemis-roles.properties
     cp /var/lib/artemis/etc/artemis-roles.properties /var/lib/artemis/etc-override/artemis-roles.properties
     cp /var/lib/artemis/etc/artemis-users.properties /var/lib/artemis/etc-override/artemis-users.properties
-    
+
     GROUPNAME=$(echo ${HOSTNAME} | sed -re 's/(-slave|-master)//')
     echo Setting the group-name for slave to ${GROUPNAME}
     xmlstarlet ed -L \
@@ -54,4 +54,3 @@ data:
       -N core="urn:activemq:core" \
       -u "/activemq:configuration/core:core/core:cluster-connections/core:cluster-connection[@name='{{ $releaseName }}']/core:connector-ref" \
       -v "${HOSTNAME}" /var/lib/artemis/etc-override/broker-10.xml
-

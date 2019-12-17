@@ -1,5 +1,5 @@
 name: activemq-artemis
-version: 0.0.16
+version: 0.0.17
 appVersion: 2.10.x
 description: a multi-protocol, embeddable, very high performance, clustered, asynchronous messaging system.
 keywords:
@@ -16,6 +16,6 @@ sources:
 - https://github.com/kubernetes/charts
 - https://github.com/apache/activemq-artemis
 maintainers:
-- name: vromero
-  email: victor.romero@gmail.com
+- name: farhad-dxc
+  email: falaghband@dentalxchange.com
 engine: gotpl

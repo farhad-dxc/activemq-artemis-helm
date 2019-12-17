@@ -6,7 +6,6 @@ metadata:
   labels:
 {{ include "artemis.labels.standard" . | indent 4 }}
 data:
-
   template-slave.xml: |
     <configuration xmlns="urn:activemq" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
       <core xmlns="urn:activemq:core" xsi:schemaLocation="urn:activemq:core ">
@@ -22,13 +21,10 @@ data:
       </core>
     </configuration>
 
-  configure-cluster.sh: |
-    
+  configure-cluster.sh: |    
     {{ $name := default .Chart.Name .Values.nameOverride }}
     {{ $releaseName := printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-
     MASTERNAME=$(echo ${HOSTNAME} | sed -re 's/-slave/-master/g')
-
     set -e
     
     echo Copying common configuration

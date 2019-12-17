@@ -22,7 +22,9 @@ spec:
   - name: exporter
     port: 9404
     targetPort: exporter
+  {{- if not (eq .Values.service.type "hostPort") }}
   type: {{ .Values.service.type }}
+  {{- end }}
   selector:
     app: {{ template "artemis.name" . }}
     release: {{ .Release.Name | quote }}
