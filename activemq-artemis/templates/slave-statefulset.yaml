@@ -27,6 +27,7 @@ spec:
         release: {{ .Release.Name | quote }}
         component: slave
     spec:
+      imagePullSecrets: {{ toYaml .Values.image.pullSecrets }}
       strategy:
         type: Recreate
       securityContext:
@@ -35,7 +36,6 @@ spec:
       - name: configure-cluster
         image: {{ template "artemis.image" . }}
         imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
-        imagePullSecrets: {{ toYaml .Values.image.pullSecrets }}
         command: ["/bin/sh", "/opt/configure-slave/configure-cluster.sh"]
         volumeMounts:
           - name: data

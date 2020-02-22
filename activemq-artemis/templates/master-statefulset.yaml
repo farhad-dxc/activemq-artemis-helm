@@ -26,6 +26,7 @@ spec:
         release: {{ .Release.Name | quote }}
         component: master
     spec:
+      imagePullSecrets: {{ toYaml .Values.image.pullSecrets }}
       affinity:
         podAntiAffinity:
         {{- if eq .Values.antiAffinity "hard" }}
@@ -55,7 +56,6 @@ spec:
       - name: configure-cluster
         image: {{ template "artemis.image" . }}
         imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
-        imagePullSecrets: {{ toYaml .Values.image.pullSecrets }}
         command: ["/bin/sh", "/opt/configure-master/configure-cluster.sh"]
         volumeMounts:
           - name: config-override
@@ -157,4 +157,3 @@ spec:
       - name: data
         emptyDir: {}
   {{- end}}
-  
