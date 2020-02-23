@@ -10,12 +10,14 @@ metadata:
 spec:
   serviceName: {{ include "artemis.fullname" . }}-slave
   replicas: {{ .Values.replicas }}
+  updateStrategy:
+    type: OnDelete
   podManagementPolicy: "Parallel"
   revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: {{ template "artemis.name" . }}
-      release: {{ .Release.Name | quote }}    
+      release: {{ .Release.Name | quote }}
       component: slave
   template:
     metadata:
@@ -28,8 +30,6 @@ spec:
         component: slave
     spec:
       imagePullSecrets: {{ toYaml .Values.image.pullSecrets }}
-      strategy:
-        type: Recreate
       securityContext:
 {{ toYaml .Values.securityContext | indent 8 }}
       initContainers:
