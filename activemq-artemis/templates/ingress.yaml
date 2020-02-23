@@ -29,7 +29,7 @@ spec:
               servicePort: 8161
 {{- if .Values.ingress.tls }}
   tls:
-    - secretName: {{  .Values.ingress.tlsSecret }}
+    - secretName: {{ .Values.ingress.tlsSecret }}
       {{- if .Values.ingress.hostName }}
       hosts:
         - {{ .Values.ingress.hostName }}

@@ -22,7 +22,7 @@ spec:
   - name: exporter
     port: 9404
     targetPort: exporter
-  {{- if not (eq .Values.service.type "hostPort") }}
+  {{- if not (eq .Values.service.type "HostPort") }}
   type: {{ .Values.service.type }}
   {{- end }}
   selector:

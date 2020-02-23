@@ -1,3 +1,4 @@
+{{- if .Values.slaves }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -23,7 +24,7 @@ spec:
   - name: exporter
     port: 9404
     targetPort: exporter
-  {{- if not (eq .Values.service.type "hostPort") }}
+  {{- if not (eq .Values.service.type "HostPort") }}
   type: {{ .Values.service.type }}
   {{- end }}
   publishNotReadyAddresses: true
@@ -31,3 +32,4 @@ spec:
     app: {{ template "artemis.name" . }}
     release: {{ .Release.Name | quote }}
     component: slave
+{{- end }}

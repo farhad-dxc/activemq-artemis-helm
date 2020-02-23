@@ -91,22 +91,22 @@ spec:
         ports:
         - name: http
           containerPort: 8161
-          {{- if eq .Values.service.type "hostPort" }}
+          {{- if eq .Values.service.type "HostPort" }}
           hostPort: 8161
           {{- end }}
         - name: core
           containerPort: 61616
-          {{- if eq .Values.service.type "hostPort" }}
+          {{- if eq .Values.service.type "HostPort" }}
           hostPort: 61616
           {{- end }}
         - name: amqp
           containerPort: 5672
-          {{- if eq .Values.service.type "hostPort" }}
+          {{- if eq .Values.service.type "HostPort" }}
           hostPort: 5672
           {{- end }}
         - name: exporter
           containerPort: 9404
-          {{- if eq .Values.service.type "hostPort" }}
+          {{- if eq .Values.service.type "HostPort" }}
           hostPort: 9404
           {{- end }}
         livenessProbe:
