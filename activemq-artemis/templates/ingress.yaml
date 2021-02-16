@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled }}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "artemis.fullname" . }}
@@ -24,9 +24,12 @@ spec:
     {{- end }}
         paths:
           - path: {{ .Values.ingress.path }}
+            pathType: {{ .Values.ingress.pathType }}
             backend:
-              serviceName: {{ include "artemis.fullname" . }}-master
-              servicePort: 8161
+              service:
+                name: {{ include "artemis.fullname" . }}-master
+                port:
+                    number: 8161
 {{- if .Values.ingress.tls }}
   tls:
     - secretName: {{ .Values.ingress.tlsSecret }}

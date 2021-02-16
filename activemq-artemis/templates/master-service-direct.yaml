@@ -1,0 +1,44 @@
+{{- $name := include "artemis.name" . -}}
+{{- $fullname := include "artemis.fullname" . -}}
+{{- $standardLabels := include "artemis.labels.standard" . -}}
+{{- $releaseName := .Release.Name -}}
+{{- $releaseNamespace := .Release.Namespace -}}
+{{- $serviceType := .Values.service.type -}}
+
+{{- range $i,$t := until (int .Values.replicas) }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    # Make sure DNS is resolvable during initialization.
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  name: {{ $fullname }}-master-{{ . }}
+  namespace: {{ $releaseNamespace }}
+  labels:
+{{ $standardLabels | indent 4 }}
+    component: artemis-node
+spec:
+  ports:
+  - name: http
+    port: 8161
+    targetPort: http
+  - name: core
+    port: 61616
+    targetPort: core
+  - name: amqp
+    port: 5672
+    targetPort: amqp
+  - name: exporter
+    port: 9404
+    targetPort: exporter
+  {{- if not (eq $serviceType "HostPort") }}
+  type: {{ $serviceType }}
+  {{- end }}
+  publishNotReadyAddresses: true
+  selector:
+    app: {{ $name }}
+    release: {{ $releaseName | quote }}
+    component: master
+    statefulset.kubernetes.io/pod-name: {{ $fullname }}-master-{{ . }}
+{{- end }}

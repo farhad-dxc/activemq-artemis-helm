@@ -1,0 +1,53 @@
+{{- if and .Values.ingress.enabled .Values.ingress.direct.enabled }}
+{{- $name := include "artemis.name" . -}}
+{{- $fullname := include "artemis.fullname" . -}}
+{{- $standardLabels := include "artemis.labels.standard" . -}}
+{{- $releaseName := .Release.Name -}}
+{{- $releaseNamespace := .Release.Namespace -}}
+{{- $ingressAnnotations := .Values.ingress.direct.annotations -}}
+{{- $path := .Values.ingress.direct.path -}}
+{{- $pathType := .Values.ingress.direct.pathType -}}
+{{- $hostNamePattern := .Values.ingress.direct.hostNamePattern -}}
+{{- $tls := .Values.ingress.direct.tls -}}
+{{- $tlsSecretPattern := .Values.ingress.direct.tlsSecretPattern -}}
+
+{{- range $i,$t := until (int .Values.replicas) }}
+{{- $hostIndex := add $i 1 -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullname }}-{{ . }}
+  namespace: {{ $releaseNamespace }}
+  labels:
+{{ $standardLabels | indent 4 }}
+  annotations:
+    {{- range $key, $value := $ingressAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  rules:
+    {{- if $hostNamePattern }}
+    - host: {{ printf $hostNamePattern $hostIndex }}
+      http:
+    {{- else }}
+    - http:
+    {{- end }}
+        paths:
+          - path: {{ $path }}
+            pathType: {{ $pathType }}
+            backend:
+              service:
+                name: {{ $fullname }}-master-{{ . }}
+                port:
+                    number: 8161
+{{- if $tls }}
+  tls:
+    - secretName: {{ printf $tlsSecretPattern $hostIndex }}
+      {{- if $hostNamePattern }}
+      hosts:
+        - {{ printf $hostNamePattern $hostIndex | println }}
+      {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

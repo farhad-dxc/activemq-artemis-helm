@@ -1,3 +1,5 @@
 **/.idea
 /.vs
 /activemq-artemis-*.tgz
+/test-values.yaml
+/debug.yaml
