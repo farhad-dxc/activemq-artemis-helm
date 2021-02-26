@@ -1,3 +1,4 @@
+{{- $root := . -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,6 +13,7 @@ data:
       <core xmlns="urn:activemq:core" xsi:schemaLocation="urn:activemq:core ">
 
         <ha-policy>
+          {{- if $root.Values.slaves }}
           <replication>
             <master>
               <group-name>to-be-set-by-configure-cluster.sh</group-name>
@@ -19,6 +21,13 @@ data:
               <check-for-live-server>false</check-for-live-server>
             </master>
           </replication>
+          {{- else }}
+          <live-only>
+            <scale-down>
+              <group-name>to-be-set-by-configure-cluster.sh</group-name>
+            </scale-down>
+          </live-only>
+          {{- end }}
         </ha-policy>
       </core>
     </configuration>
@@ -41,11 +50,15 @@ data:
     cp /var/lib/artemis/etc/artemis-users.properties /var/lib/artemis/etc-override/artemis-users.properties
 
     GROUPNAME=$(echo ${HOSTNAME} | sed -re 's/(-slave|-master)//')
-    echo Setting the group-name for slave to ${GROUPNAME}
+    echo Setting the group-name to ${GROUPNAME}
     xmlstarlet ed -L \
     -N activemq="urn:activemq" \
     -N core="urn:activemq:core" \
+    {{- if $root.Values.slaves }}
     -u "/activemq:configuration/core:core/core:ha-policy/core:replication/core:master/core:group-name" \
+    {{- else }}
+    -u "/activemq:configuration/core:core/core:ha-policy/core:live-only/core:scale-down/core:group-name" \
+    {{- end }}
     -v "${GROUPNAME}" /var/lib/artemis/etc-override/broker-11.xml
 
     echo Setting the connector-ref to ${HOSTNAME}
