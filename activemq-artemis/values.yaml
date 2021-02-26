@@ -21,6 +21,9 @@ replicas: 1
 
 slaves: false
 
+updateStrategy:
+  type: OnDelete
+
 # antiAffinity sets an anti affinity policy between masters and slaves as either hard or soft, default is hard
 antiAffinity: "soft"
 

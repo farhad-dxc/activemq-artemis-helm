@@ -12,8 +12,8 @@ spec:
   serviceName: {{ include "artemis.fullname" . }}-slave
   replicas: {{ .Values.replicas }}
   updateStrategy:
-    type: OnDelete
-  podManagementPolicy: "Parallel"
+    type: {{ .Values.updateStrategy.type }}
+  podManagementPolicy: Parallel
   revisionHistoryLimit: 10
   selector:
     matchLabels:
